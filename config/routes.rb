@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :tweets do
     get 'first'
     get 'last'
+    get 'order_author'
+    get 'order_approp'
   end
 
 

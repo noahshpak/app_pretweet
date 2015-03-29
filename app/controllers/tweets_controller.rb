@@ -12,11 +12,11 @@ class TweetsController < ApplicationController
   end
   
   def order_author
-    @tweets.order(:author)
+    @tweets = Tweet.order(:author)
   end
   
   def order_approp
-    @tweets.order(:approp_score)
+     @tweets = Tweet.order(:approp_score)
   end
 
 
