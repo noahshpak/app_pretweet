@@ -19,10 +19,12 @@ class TweetsController < ApplicationController
      @tweets = Tweet.order(:approp_score)
   end
 
-
   
-  def get_approp_score
+  def crowdsource
     #add crowdflower stuff
+    #add some way for users to select the right tweets
+    #then add route same way as first, last (above)
+    #then display --think about another controller?
   end
 
   # GET /tweets

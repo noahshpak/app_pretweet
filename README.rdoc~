@@ -1,0 +1,9 @@
+== PreTweet
+
+PReTweet is a web application that uses crowdsourcing to determine how audiences will respond to a potential tweet. 
+This project was created by Noah Shpak at UPenn.
+
+As of right now, the application utilizes Devise and twitter bootstrap for views.
+
+I have added a sorting query to the indexing of Tweets to make it show by appropriateness score (to be implemented with Crowdflower)
+
