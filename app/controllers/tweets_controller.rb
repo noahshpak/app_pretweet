@@ -2,6 +2,24 @@ class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
  
 
+   # GET /tweets/first
+  def first
+    @tweet = Tweet.first
+  end 
+  
+  def last
+    @tweet = Tweet.last
+  end
+  
+  def order_author
+    @tweets.order(:author)
+  end
+  
+  def order_approp
+    @tweets.order(:approp_score)
+  end
+
+
   
   def get_approp_score
     #add crowdflower stuff

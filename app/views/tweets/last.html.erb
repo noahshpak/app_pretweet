@@ -1,0 +1,16 @@
+<h1>Last Tweet</h1>
+<p>
+  <strong>Author:</strong>
+  <%= @tweet.author %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @tweet.body %>
+</p>
+<p>
+  <strong>Appropriateness:</strong>
+  <%= @tweet.approp_score %>
+</p>
+
+<%= link_to 'Back', tweets_path %>

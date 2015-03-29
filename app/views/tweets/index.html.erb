@@ -25,9 +25,14 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to 'Create a New Tweet', new_tweet_path %>
+<br>
+<%= link_to 'Check out your first tweet', tweet_first_path(@tweets) %>
+
+<br>
+<%= link_to 'Check out your latest tweet', tweet_last_path(@tweets) %>
 
 <br>
 
-<%= link_to 'New Tweet', new_tweet_path %>
 
 

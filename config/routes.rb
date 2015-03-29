@@ -4,7 +4,11 @@ Rails.application.routes.draw do
 
   devise_for :users
   root :to => redirect('/tweets')
-  resources :tweets
+  resources :tweets do
+    get 'first'
+    get 'last'
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
