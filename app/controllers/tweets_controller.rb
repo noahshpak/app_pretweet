@@ -1,10 +1,16 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
+ 
+
+  
+  def get_approp_score
+    #add crowdflower stuff
+  end
 
   # GET /tweets
   # GET /tweets.json
   def index
-    @tweets = Tweet.all
+    @tweets = Tweet.order(:approp_score)
   end
 
   # GET /tweets/1
