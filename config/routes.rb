@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   get '/crowdsource', to: 'tweets#crowdsource', as: 'crowdsource'
-
+   get '/run_crowdsource', to: 'tweets#run_crowdsource', as: 'crowdsourcing'
 
 
 

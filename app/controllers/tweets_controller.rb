@@ -1,3 +1,4 @@
+require 'crowdflower'
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
   # GET /tweets
@@ -5,6 +6,8 @@ class TweetsController < ApplicationController
   
 
    # GET /tweets/first
+  API_KEY = "7j-9LVUMR2w9kyGPNu_B"
+  DOMAIN_BASE = "https://api.crowdflower.com"
   def first
     @tweet = Tweet.first
   end 
@@ -25,8 +28,11 @@ class TweetsController < ApplicationController
  
   def index
     @tweets = Tweet.order(:approp_score)
+  end
 
-    
+  def new_crowdflower
+    @tweet = Tweet.new
+    @tweet.crowdflower = true
   end
  
 
@@ -87,7 +93,6 @@ class TweetsController < ApplicationController
 
   def crowdsource
     @tweets = Tweet.all
-    
     render template: "tweets/crowdsource.html.erb"
         
     
@@ -95,6 +100,16 @@ class TweetsController < ApplicationController
     #add some way for users to select the right tweets
     #then add route same way as first, last (above)
     #then display --think about another controller?
+  end
+  def run_crowdsource
+    @tweets = Tweet.all
+    CrowdFlower::Job.connect! API_KEY, DOMAIN_BASE
+    job = CrowdFlower::Job.create("Crowdsource Tweets")
+    @tweets.each do |tweet| 
+      unit = CrowdFlower::Unit.new(job)
+      unit.create("content"=>tweet.body) 
+    end
+    render template: "tweets/crowdsource.html.erb"
   end
 
 
