@@ -2,6 +2,7 @@
 
 <h1>Listing Tweets</h1>
 
+
 <table>
   <thead>
     <tr>
@@ -26,6 +27,7 @@
   </tbody>
 </table>
 <%= link_to 'Create a New Tweet', new_tweet_path %>
+
 <br>
 <%= link_to 'Sort by Author name', tweet_order_author_path(@tweets) %>
 
@@ -38,7 +40,6 @@
 <br>
 <%= link_to 'Check out your latest tweet', tweet_last_path(@tweets) %>
 
-<br>
 
 
 

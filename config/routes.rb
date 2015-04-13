@@ -1,15 +1,19 @@
 
 Rails.application.routes.draw do
 
-
   devise_for :users
   root :to => redirect('/tweets')
+
   resources :tweets do
     get 'first'
     get 'last'
     get 'order_author'
     get 'order_approp'
   end
+
+  get '/crowdsource', to: 'tweets#crowdsource', as: 'crowdsource'
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

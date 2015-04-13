@@ -1,6 +1,8 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
- 
+  # GET /tweets
+  # GET /tweets.json
+  
 
    # GET /tweets/first
   def first
@@ -18,20 +20,16 @@ class TweetsController < ApplicationController
   def order_approp
      @tweets = Tweet.order(:approp_score)
   end
-
-  
-  def crowdsource
-    #add crowdflower stuff
-    #add some way for users to select the right tweets
-    #then add route same way as first, last (above)
-    #then display --think about another controller?
-  end
-
   # GET /tweets
   # GET /tweets.json
+ 
   def index
     @tweets = Tweet.order(:approp_score)
+
+    
   end
+ 
+
 
   # GET /tweets/1
   # GET /tweets/1.json
@@ -86,6 +84,19 @@ class TweetsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def crowdsource
+    @tweets = Tweet.all
+    
+    render template: "tweets/crowdsource.html.erb"
+        
+    
+    #add crowdflower stuff
+    #add some way for users to select the right tweets
+    #then add route same way as first, last (above)
+    #then display --think about another controller?
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
