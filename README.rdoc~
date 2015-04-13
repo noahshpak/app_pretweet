@@ -5,5 +5,8 @@ This project was created by Noah Shpak at UPenn.
 
 As of right now, the application utilizes Devise and twitter bootstrap for views.
 
-I have added a sorting query to the indexing of Tweets to make it show by appropriateness score (to be implemented with Crowdflower)
+There are now options for showing the first or last tweet submitted and the ability to view the table sorted by author name or appropriateness score.
 
+I will be adding the functionality of Crowdflower (with their API) soon.  
+
+This will involve creating a Job on Crowdflower with certain tweets specified by the user, starting the job, and displaying the results in a meaningful way when the Job has been completed. 
