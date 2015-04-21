@@ -10,11 +10,9 @@ Rails.application.routes.draw do
     get 'order_author'
     get 'order_approp'
   end
-
+  get '/results', to: 'tweets#results', as: 'results'
   get '/crowdsource', to: 'tweets#crowdsource', as: 'crowdsource'
-   get '/run_crowdsource', to: 'tweets#run_crowdsource', as: 'crowdsourcing'
-
-
+  get '/run_crowdsource', to: 'tweets#run_crowdsource', as: 'crowdsourcing'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
