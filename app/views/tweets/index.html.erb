@@ -3,13 +3,13 @@
 <h1>Listing Tweets</h1>
 
 
-<table>
+<table class = table table-bordered>
   <thead>
     <tr>
       <th>Author</th>
       <th>Body</th>
       <th>Appropriateness</th>
-      <th colspan="4"></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
 
@@ -19,26 +19,46 @@
         <td><%= tweet.author %></td>
         <td><%= tweet.body %></td>
         <td><%= tweet.approp_score %></td>
-        <td><%= link_to 'Show', tweet %></td>
         <td><%= link_to 'Edit', edit_tweet_path(tweet) %></td>
         <td><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<%= link_to 'Create a New Tweet', new_tweet_path %>
 
-<br>
-<%= link_to 'Sort by Author name', tweet_order_author_path(@tweets) %>
 
-<br>
-<%= link_to 'Sort by Appropriateness', tweet_order_approp_path(@tweets) %>
 
-<br>
-<%= link_to 'Check out your first tweet', tweet_first_path(@tweets) %>
+<style>
+a.index:link, a.index:visited {
+    float: left;
+    display: block;
+    font-weight: bold;
+    color: #F8F8F8;
+    background-color: #3399FF;
+    width: 120px;
+    text-align: center;
+    padding: 3px;
+    text-decoration: none;
+    border-right: grey;
+    border-style: solid;
+    border-width: 2px;
+  
+}
 
-<br>
-<%= link_to 'Check out your latest tweet', tweet_last_path(@tweets) %>
+a.index:hover, a.index:active {
+    background-color: #3488FF;
+}
+</style>
+</head>
+<body>
+
+<a href="/new_tweet_path/" class = index>Create a New Tweet</a>
+<a href="/new_tweet_path/" class = index>Sort by Author name</a>
+<a href="/new_tweet_path/" class = index>Sort by Appropriateness</a>
+<a href="/new_tweet_path/" class = index>Check out your first tweet</a>
+
+
+
 
 
 

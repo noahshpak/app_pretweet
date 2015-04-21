@@ -2,7 +2,7 @@
 
 <h1>Listing Tweets based on Author Name</h1>
 
-<table>
+<table class = table table-bordered>
   <thead>
     <tr>
       <th>Author</th>
@@ -18,8 +18,8 @@
         <td><%= tweet.author %></td>
         <td><%= tweet.body %></td>
         <td><%= tweet.approp_score %></td>
-        <td><%= link_to 'Show', tweet %></td>
-        <td><%= link_to 'Edit', edit_tweet_path(tweet) %></td>
+        <td><%= link_to 'Show ', tweet %></td>
+        <td><%= link_to 'Edit ', edit_tweet_path(tweet) %></td>
         <td><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

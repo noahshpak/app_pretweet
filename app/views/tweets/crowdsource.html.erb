@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Crowdsource</h1>
-<%= link_to 'Crowdsource These Tweets', crowdsourcing_path %>
-<table>
+
+
+<section>
+<table class = table table-bordered>
   <thead>
     <tr>
       <th>Author</th>
@@ -21,4 +23,9 @@
     <% end %>
   </tbody>
 </table>
+<a href="/run_crowdsource/" class = index>Crowdsource These Tweets</a>
+<a href="/new_tweet/" class = index>Crowdsource These Tweets</a>
+
 <%= link_to 'Create a New Tweet', new_tweet_path %>
+</section>
+

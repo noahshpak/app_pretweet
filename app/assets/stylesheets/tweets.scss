@@ -1,3 +1,24 @@
 // Place all the styles related to the tweets controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+table {
+    @extend %table;
+    @extend %table-bordered;
+
+}
+a:link {
+    background-color: #B2FF99;
+}
+
+a:visited {
+    background-color: #FFFF85;
+}
+
+a:hover {
+    background-color: #FF704D;
+}
+
+a:active {
+    background-color: #FF704D;
+}

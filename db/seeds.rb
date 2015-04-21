@@ -1,8 +1,3 @@
-Tweet.create(author: "John", body: "I hate the news", approp_score: 3.5)
-
-Tweet.create(author: "jack", body: "There are a lot of people here", approp_score: 5.0)
-Tweet.create(author: "YaBoi Hamlet", body: "Shakespeare is my homie", approp_score: 4.5)
-
 
 
 
