@@ -26,36 +26,13 @@
   </tbody>
 </table>
 
-
-
-<style>
-a.index:link, a.index:visited {
-    float: left;
-    display: block;
-    font-weight: bold;
-    color: #F8F8F8;
-    background-color: #3399FF;
-    width: 120px;
-    text-align: center;
-    padding: 3px;
-    text-decoration: none;
-    border-right: grey;
-    border-style: solid;
-    border-width: 2px;
-  
-}
-
-a.index:hover, a.index:active {
-    background-color: #3488FF;
-}
-</style>
 </head>
-<body>
 
-<a href="/new_tweet_path/" class = index>Create a New Tweet</a>
-<a href="/new_tweet_path/" class = index>Sort by Author name</a>
-<a href="/new_tweet_path/" class = index>Sort by Appropriateness</a>
-<a href="/new_tweet_path/" class = index>Check out your first tweet</a>
+
+<a href="/tweets/new" class = index>Create a New Tweet</a>
+<a href="/tweets/:tweet_id/order_author" class = index>Sort by Author name</a>
+<a href="/tweets/:tweet_id/order_approp" class = index>Sort by Appropriateness</a>
+<a href="/tweets/:tweet_id/first" class = index>Check out your first tweet</a>
 
 
 

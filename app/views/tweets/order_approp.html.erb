@@ -27,17 +27,7 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to 'Create a New Tweet', new_tweet_path %>
-<br>
-<%= link_to 'Sort by Author name', tweet_order_author_path(@tweets) %>
-
-<br>
-<%= link_to 'Sort by Appropriateness', tweet_order_approp_path(@tweets) %>
-
-<br>
-<%= link_to 'Check out your first tweet', tweet_first_path(@tweets) %>
-
-<br>
-<%= link_to 'Check out your latest tweet', tweet_last_path(@tweets) %>
-
-<br>
+<a href="/tweets/new" class = index>Create a New Tweet</a>
+<a href="/tweets/:tweet_id/order_author" class = index>Sort by Author name</a>
+<a href="/tweets/:tweet_id/order_approp" class = index>Sort by Appropriateness</a>
+<a href="/tweets/:tweet_id/first" class = index>Check out your first tweet</a>
