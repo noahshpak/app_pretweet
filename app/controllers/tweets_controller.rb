@@ -1,4 +1,8 @@
+require 'rubygems'
 require 'crowdflower'
+require 'json'
+require 'sinatra'
+
 
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
@@ -147,27 +151,46 @@ class TweetsController < ApplicationController
     :units_per_assignment => Tweet.count, # This is the number of units that a contributor must complete on a page before submitting their answers. 
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
+    :webhook_uri => "http://localhost:3000/tweets/webhook(.:format)",
     :options => {
-        :front_load => 0, # quiz mode = 1; turn off with 0
+        :front_load => 1, # quiz mode = 1; turn off with 0
       }
     })
     #wait for the upload
     #add in loading animation
-    job.enable_channels(['cf-internal'])
+    job.enable_channels(['cf_internal'])
     if job.get["units_count"] == Tweet.count
       order = CrowdFlower::Order.new(job)
-      order.debit(Tweet.count, ['cf-internal'])
+      order.debit(Tweet.count, ['cf_internal'])
     end
-    #job.status["completed_units_estimate"]
-    while true do 
-      if job.get['completed']
-        render template: "tweets/results.html.erb"
-      end
-    end
+    job.get["send_judgments_webhook"]
+    puts job.status["completed_units_estimate"]
+    render template: "tweets/results.html.erb"
+    #while true do 
+    #  if job.get['completed']
+    #    
+    #  end
+    #end
   end
   
   def results
     @tweets = Tweet.all
+
+  end
+  def webhook
+    @tweets = Tweet.all
+    post '/webhook' do
+      success = true
+      if params[:signal] == "unit_complete"
+        payload = JSON.parse(params[:payload])
+        score = payload["results"]["appropriate"]["agg"]
+        @tweets.each do |tweet|
+          tweet.approp_score = score
+        end
+      #do something with answer
+      end
+      success ? 200 : 500
+    end
   end
 
  
