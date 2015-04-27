@@ -1,4 +1,5 @@
 require 'crowdflower'
+
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
   # GET /tweets
@@ -107,17 +108,15 @@ class TweetsController < ApplicationController
     #render template: "tweets/crowdsource.html.erb"
     CrowdFlower::Job.connect! API_KEY, DOMAIN_BASE
     job = CrowdFlower::Job.create("Crowdsource Tweets")
-     
     @tweets.each do |tweet| 
       unit = CrowdFlower::Unit.new(job)
       unit.create("content"=>tweet.body) 
     end
-
     hit_in_cml = '
     <h4>Read the text below paying close attention to detail:</h4>
     <div class="well">
     {{content}}</div>
-    <cml:radios label="How appropriate is this tweet?" name="appropriate" aggregation="agg" validates="required" gold="true" class="" instructions="Read the instructions for a more detailed description of each score.">
+    <cml:radios label="How appropriate is this tweet?" name="appropriate" aggregation="agg" validates="required" gold="false" class="">
       <cml:radio label="5: Universally Appropriate" value="yes"/>
       <cml:radio label="4: Mostly Appropriate" value="no"/>
       <cml:radio label="3: Appropriate" value="non_english"/>
@@ -126,7 +125,7 @@ class TweetsController < ApplicationController
     </cml:radios>
     <!-- Relevance question ends -->
     <!-- Sentiment questions begin --> 
-    <cml:radios label="How funny is this tweet?" name="humor" instructions="Read the instructions for a more detailed description of each score." gold="true" class="" validates="required"> 
+    <cml:radios label="How funny is this tweet?" name="humor" gold="false" class="" validates="required"> 
       <cml:radio label="5: Hilarious" value="hilarious"/> 
       <cml:radio label="4: Funny" value="funny"/> 
       <cml:radio label="3: Indifferent" value="indifferent"/>
@@ -136,16 +135,15 @@ class TweetsController < ApplicationController
     <!-- Sentiment question ends -->'
 
 
-
     job.update({
     :title => 'Review Tweets for Appropriateness',
-    :included_countries => ['US', 'GB'],  # Limit to the USA and United Kingdom
+    :included_countries => ['US'],  # Limit to the USA and United Kingdom
         # Please note, if you are located in another country and you would like
         # to experiment with the sandbox (internal workers) then you also need
         # to add your own country. Otherwise your submissions as internal worker
         # will be rejected with Error 301 (low quality).
-    :payment_cents => [Tweet.count, 10].min, # This is how much a contributor gets paid for each task or collection of units on a page.
-    :judgments_per_unit => 2,
+    :payment_cents => 10, # This is how much a contributor gets paid for each task or collection of units on a page.
+    :judgments_per_unit => 1,
     :units_per_assignment => Tweet.count, # This is the number of units that a contributor must complete on a page before submitting their answers. 
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
@@ -155,22 +153,23 @@ class TweetsController < ApplicationController
     })
     #wait for the upload
     #add in loading animation
-    sleep 5
-    render template: "tweets/results.html.erb"
-    
-    #job.get["units_count"] == Tweet.count
-
-    #order = CrowdFlower::Order.new(job)
-    #order.debit(Tweet.count, ["cf_internal"])
-    #while true do 
-    #  if job.get['completed']
-    #    render action: 'results'
-    #end
+    job.enable_channels(['cf-internal'])
+    if job.get["units_count"] == Tweet.count
+      order = CrowdFlower::Order.new(job)
+      order.debit(Tweet.count, ['cf-internal'])
+    end
+    #job.status["completed_units_estimate"]
+    while true do 
+      if job.get['completed']
+        render template: "tweets/results.html.erb"
+      end
+    end
   end
   
   def results
     @tweets = Tweet.all
   end
+
  
 
 
