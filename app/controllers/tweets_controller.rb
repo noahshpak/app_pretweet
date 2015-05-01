@@ -187,14 +187,26 @@ class TweetsController < ApplicationController
       puts 'webhook'
       payload = JSON.parse(params[:payload])
       puts payload
-      score = payload["results"]["appropriate"]["agg"]
+      tweet_body = payload.fetch("data").fetch("content")
+      approp = payload.fetch("results").fetch("judements").fetch("data").fetch("appropriate").fetch("agg")
+      if approp.eql? "yes"
+        score = 1
+      else 
+        score = 0
+      end
       @tweets.each do |tweet|
-        tweet.approp_score = score
+        puts tweet.body
+        puts tweet_body
+        if tweet.body.eql tweet_body
+          tweet.approp_score = score
+        end
       end
     #do something with answer
     end
     success ? 200 : 500
-    render 'results'   
+    respond_to do |format|
+      format.html {render :results}
+    end
   end
 
  
