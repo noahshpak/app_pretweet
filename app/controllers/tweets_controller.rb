@@ -151,7 +151,8 @@ class TweetsController < ApplicationController
     :units_per_assignment => Tweet.count, # This is the number of units that a contributor must complete on a page before submitting their answers. 
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
-    :webhook_uri => "https://secure-cliffs-6566.herokuapp.com/tweets/webhook",
+    :webhook_uri => 'http://localhost:3000/tweets/webhook',
+    #{other webHook}"https://secure-cliffs-6566.herokuapp.com/tweets/webhook"
     :options => {
         :front_load => 1, # quiz mode = 1; turn off with 0
       }
@@ -181,22 +182,19 @@ class TweetsController < ApplicationController
   end
   def webhook
     @tweets = Tweet.all
-    render template: '/tweets/results.html.erb'
-    #render text: 'Payload: #{request.body.read}"'
-    #post '/webhook' do
-    #  success = true
-    #  if params[:signal] == "unit_complete"
-    #    payload = JSON.parse(params[:payload])
-    #    puts payload
-    #    score = payload["results"]["appropriate"]["agg"]
-    #    @tweets.each do |tweet|
-    #      tweet.approp_score = score
-    #    end
-    #  #do something with answer
-    #  end
-    #  success ? 200 : 500
-    #end
-    
+    puts 'webhook'
+    success = true
+    if params[:signal] == "unit_complete"
+      payload = JSON.parse(params[:payload])
+      puts payload
+      score = payload["results"]["appropriate"]["agg"]
+      @tweets.each do |tweet|
+        tweet.approp_score = score
+      end
+    #do something with answer
+    end
+    success ? 200 : 500
+    render template: '/tweets/results.html.erb'    
   end
 
  
