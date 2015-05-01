@@ -190,6 +190,7 @@ class TweetsController < ApplicationController
       tweet_body = payload.fetch("data").fetch("content")
       puts tweet_body
       approp = payload.fetch("results").fetch("judements").fetch("data").fetch("appropriate").fetch("agg")
+      puts approp
       if approp.eql? "yes"
         score = 1.0
       else 
