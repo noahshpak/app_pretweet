@@ -10,15 +10,18 @@ Rails.application.routes.draw do
     get 'order_author'
     get 'order_approp'
   end
-  scope '/tweets/', :controller => :tweets do 
-    post :webhook
-  end
+  match 'tweets/webhook' => 'tweets#webhook', via: :post
   get '/results', to: 'tweets#results', as: 'results'
   get '/crowdsource', to: 'tweets#crowdsource', as: 'crowdsource'
   get '/run_crowdsource', to: 'tweets#run_crowdsource', as: 'crowdsourcing'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
+  #commented out!
+  #scope '/tweets/', :controller => :tweets do 
+  #    post :webhook
+  #  end
+  
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

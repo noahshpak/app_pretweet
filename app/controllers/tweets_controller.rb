@@ -181,19 +181,21 @@ class TweetsController < ApplicationController
   end
   def webhook
     @tweets = Tweet.all
-    post '/webhook' do
-      success = true
-      if params[:signal] == "unit_complete"
-        payload = JSON.parse(params[:payload])
-        puts payload
-        score = payload["results"]["appropriate"]["agg"]
-        @tweets.each do |tweet|
-          tweet.approp_score = score
-        end
-      #do something with answer
-      end
-      success ? 200 : 500
-    end
+    render text: 'Payload: #{request.body.read}"'
+    #post '/webhook' do
+    #  success = true
+    #  if params[:signal] == "unit_complete"
+    #    payload = JSON.parse(params[:payload])
+    #    puts payload
+    #    score = payload["results"]["appropriate"]["agg"]
+    #    @tweets.each do |tweet|
+    #      tweet.approp_score = score
+    #    end
+    #  #do something with answer
+    #  end
+    #  success ? 200 : 500
+    #end
+    render template: '/tweets/results.html.erb'
   end
 
  
