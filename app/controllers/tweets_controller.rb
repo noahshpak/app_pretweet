@@ -181,7 +181,8 @@ class TweetsController < ApplicationController
   end
   def webhook
     @tweets = Tweet.all
-    render text: 'Payload: #{request.body.read}"'
+    render template: '/tweets/results.html.erb'
+    #render text: 'Payload: #{request.body.read}"'
     #post '/webhook' do
     #  success = true
     #  if params[:signal] == "unit_complete"
@@ -195,7 +196,7 @@ class TweetsController < ApplicationController
     #  end
     #  success ? 200 : 500
     #end
-    render template: '/tweets/results.html.erb'
+    
   end
 
  
