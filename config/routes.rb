@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get 'order_author'
     get 'order_approp'
   end
+  match 'tweets/webhook' => 'tweets#webhook', via: :post
   get '/results', to: 'tweets#results', as: 'results'
   get '/crowdsource', to: 'tweets#crowdsource', as: 'crowdsource'
   get '/run_crowdsource', to: 'tweets#run_crowdsource', as: 'crowdsourcing'
