@@ -112,9 +112,9 @@ class TweetsController < ApplicationController
     #render template: "tweets/crowdsource.html.erb"
     CrowdFlower::Job.connect! API_KEY, DOMAIN_BASE
     job = CrowdFlower::Job.create("Crowdsource Tweets")
-    @tweets.each do |tweet| 
+    @tweets.each_with_index do |tweet| 
       unit = CrowdFlower::Unit.new(job)
-      unit.create("content"=>tweet.body) 
+      unit.create("id" => index, "content"=>tweet.body) 
     end
     hit_in_cml = '
     <h4>Read the text below paying close attention to detail:</h4>
@@ -127,16 +127,7 @@ class TweetsController < ApplicationController
       <cml:radio label="2: Mildly Inappropriate" value="mildly inappropriate"/>
       <cml:radio label="1: Inappropriate" value="inappropriate"/>
     </cml:radios>
-    <!-- Relevance question ends -->
-    <!-- Sentiment questions begin --> 
-    <cml:radios label="How funny is this tweet?" name="humor" gold="false" class="" validates="required"> 
-      <cml:radio label="5: Hilarious" value="hilarious"/> 
-      <cml:radio label="4: Funny" value="funny"/> 
-      <cml:radio label="3: Indifferent" value="indifferent"/>
-      <cml:radio label="2: Not funny" value="not funny"/>
-      <cml:radio label="1: Really really not funny at all" value="really really not funny at all" id=""/> 
-    </cml:radios>
-    <!-- Sentiment question ends -->'
+    <!-- Relevance question ends -->'
 
 
     job.update({
@@ -151,28 +142,66 @@ class TweetsController < ApplicationController
     :units_per_assignment => Tweet.count, # This is the number of units that a contributor must complete on a page before submitting their answers. 
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
-    :webhook_uri => 'https://secure-cliffs-6566.herokuapp.com/tweets/webhook',
+    #:webhook_uri => 'https://secure-cliffs-6566.herokuapp.com/tweets/webhook',
+    :explicit_content => false,
     :options => {
         :front_load => 1, # quiz mode = 1; turn off with 0
       }
     })
     #wait for the upload
     #add in loading animation
+    # add 'on_demand' for extermal
     job.enable_channels(['cf_internal'])
-    if job.get["units_count"] == Tweet.count
-      order = CrowdFlower::Order.new(job)
-      order.debit(Tweet.count, ['cf_internal'])
+    while true do
+      if job.get["units_count"] == Tweet.count
+        order = CrowdFlower::Order.new(job)
+        order.debit(Tweet.count, ['cf_internal'])
+        break
+      end
     end
-    job.get["send_judgments_webhook"]
-    #job.status["completed_units_estimate"]
     respond_to do |format|
       format.html {render :results}
     end
-    #while true do 
-    #  if job.get['completed']
-    #    
-    #  end
-    #end
+    tweet_bodies = []
+    scores = []
+    while true do 
+      puts job.status["completed_units_estimate"]
+      if job.get['completed']
+        judgment = CrowdFlower::Judgment.new(job) 
+        response = judgment.all
+        payload = JSON.parse(response.body)
+        for row in payload 
+          row[1].each_with_index do |val, index| 
+            if val.include? "content"
+              tweet_bodies.push(val[1])
+            elsif val.include? "appropriate" 
+              if val[1].fetch('agg').eql? "yes"
+                scores.push(1)
+              else 
+                scores.push(0)
+              end
+            end
+          end
+        end
+        puts tweet_bodies
+        puts scores
+        @tweets.each_with_index do |tweet|
+          body = tweet.body
+          if body.include? "\n"
+            body = body.gsub('\n', '')
+          end
+          if (tweet_bodies.index(body)) 
+            score = scores[tweet_bodies.index(body)]
+            tweet.update(approp_score: score)
+          else 
+            puts "fail"
+          end
+        end
+        break
+      else 
+        sleep 30
+      end
+    end
   end
   
   def results
@@ -180,40 +209,6 @@ class TweetsController < ApplicationController
     render template: '/tweets/results.html.erb' 
 
   end
-  def webhook
-    @tweets = Tweet.all
-    success = true
-    if params[:signal] == "unit_complete"
-      puts 'webhook'
-      payload = JSON.parse(params[:payload])
-      puts payload
-      tweet_body = payload.fetch("data").fetch("content")
-      puts tweet_body
-      approp = payload.fetch("results").fetch("appropriate").fetch("agg")
-      puts approp
-      if approp.eql? "yes"
-        score = 1.0
-      else 
-        score = 0.0
-      end
-      puts score
-      @tweets.each do |tweet|
-        puts tweet.body
-        puts tweet_body
-        if tweet.body.eql? tweet_body
-          tweet.approp_score = score
-        end
-      end
-    end
-    success ? 200 : 500
-    respond_to do |format|
-      format.html {render :results}
-    end
-  end
-
- 
-
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
