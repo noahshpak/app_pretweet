@@ -42,8 +42,9 @@ def Tweet.fetch_data
 	      end
 	    end
   	else 
-    	success ? 200 : 500
+  		sleep 10
   	end
+
 end
 
 def Tweet.run_crowdsource
@@ -80,8 +81,6 @@ def Tweet.run_crowdsource
     :units_per_assignment => Tweet.count, # This is the number of units that a contributor must complete on a page before submitting their answers. 
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
-    :webhook_uri => 'https://secure-cliffs-6566.herokuapp.com/tweets/webhook',
-    #''
     :explicit_content => false,
     :options => {
         :front_load => 1, # quiz mode = 1; turn off with 0
@@ -90,11 +89,11 @@ def Tweet.run_crowdsource
     #wait for the upload
     #add in loading animation
     # add 'on_demand' for extermal
-    job.enable_channels(['cf_internal'])
+    job.enable_channels(['on_demand'])
     while true do
       if job.get["units_count"] == Tweet.count
         order = CrowdFlower::Order.new(job)
-        order.debit(Tweet.count, ['cf_internal'])
+        order.debit(Tweet.count, ['on_demand'])
         break
       end
     end

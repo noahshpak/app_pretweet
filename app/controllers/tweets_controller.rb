@@ -116,15 +116,6 @@ class TweetsController < ApplicationController
 
   end
 
-  def webhook
-    @tweets = Tweet.all
-    success = true
-    if params[:signal] == "unit_complete"
-      Tweet.fetch_data  
-    end
-    success ? 200 : 500
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tweet
