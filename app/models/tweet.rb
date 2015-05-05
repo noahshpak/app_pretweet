@@ -9,6 +9,7 @@ class Tweet < ActiveRecord::Base
 def Tweet.fetch_data
 	tweet_bodies = []
 	scores = []
+	success = true
   	if job.get['completed']
 	    judgment = CrowdFlower::Judgment.new(job) 
 	    response = judgment.all
@@ -41,7 +42,7 @@ def Tweet.fetch_data
 	      end
 	    end
   	else 
-    	return
+    	success ? 200 : 500
   	end
 end
 
@@ -80,6 +81,7 @@ def Tweet.run_crowdsource
     :instructions => 'Please read the following tweet and rate the humor level and expected audience',
     :cml => hit_in_cml,
     :webhook_uri => 'https://secure-cliffs-6566.herokuapp.com/tweets/webhook',
+    #''
     :explicit_content => false,
     :options => {
         :front_load => 1, # quiz mode = 1; turn off with 0

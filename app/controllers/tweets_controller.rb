@@ -115,13 +115,14 @@ class TweetsController < ApplicationController
     render template: '/tweets/results.html.erb' 
 
   end
+
   def webhook
     @tweets = Tweet.all
     success = true
     if params[:signal] == "unit_complete"
       Tweet.fetch_data  
     end
-    render status: 200 
+    success ? 200 : 500
   end
 
   private
