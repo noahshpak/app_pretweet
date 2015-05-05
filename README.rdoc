@@ -7,6 +7,9 @@ As of right now, the application utilizes Devise and twitter bootstrap for views
 
 There are now options for showing the first or last tweet submitted and the ability to view the table sorted by author name or appropriateness score.
 
-I added Crowdflower funcionality.  Now, when the user clicks "crowdsource these tweets", a Job is created on Crowdflower with certain tweets specified by the user
+I added Crowdflower funcionality.  Now, when the user clicks "crowdsource these tweets", a Job is created on Crowdflower with certain tweets specified by the user. 
+Getting the response back from Crowdflower took a very long time for me.  
 
-The next step is to launch the job to be reviewed by the crowd.  I still am deciding exactly how I want that to look and how I want the data to be presented after the crowd has given back responses. 
+The form for new tweets validates that there are no newline characters as well as the length is less than 120 characters.
+
+This was a lot of fun to make!  
