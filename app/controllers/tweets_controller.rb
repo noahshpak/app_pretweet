@@ -120,8 +120,8 @@ class TweetsController < ApplicationController
     success = true
     if params[:signal] == "unit_complete"
       Tweet.fetch_data  
-      success ? 200 : 500
     end
+    success ? 200 : 500
   end
 
   private
